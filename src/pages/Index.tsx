@@ -9,6 +9,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const Index = () => {
   const [activeTab, setActiveTab] = useState('catalog');
 
+  const handleBuyClick = (productName: string, price: number) => {
+    const sbpUrl = `https://qr.nspk.ru/proactive/generate?sum=${price}&payeeId=123456789&purpose=${encodeURIComponent('Покупка: ' + productName)}`;
+    window.open(sbpUrl, '_blank');
+  };
+
   const starPackages = [
     {
       id: 1,
@@ -184,7 +189,10 @@ const Index = () => {
                         </div>
                       </CardContent>
                       <CardFooter>
-                        <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90">
+                        <Button 
+                          className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90"
+                          onClick={() => handleBuyClick(pkg.name, pkg.price)}
+                        >
                           Купить
                         </Button>
                       </CardFooter>
@@ -219,7 +227,10 @@ const Index = () => {
                         </div>
                       </CardContent>
                       <CardFooter>
-                        <Button className="w-full bg-gradient-to-r from-secondary to-primary hover:opacity-90">
+                        <Button 
+                          className="w-full bg-gradient-to-r from-secondary to-primary hover:opacity-90"
+                          onClick={() => handleBuyClick(sub.name, sub.price)}
+                        >
                           Подписаться
                         </Button>
                       </CardFooter>
