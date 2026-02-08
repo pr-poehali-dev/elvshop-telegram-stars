@@ -101,7 +101,7 @@ const Index = () => {
           <div className="space-y-3 py-4">
             <Button 
               className="w-full justify-start gap-3 h-12 bg-[#0088cc] hover:bg-[#0088cc]/90 text-white"
-              onClick={() => toast.info('Вход через Telegram в разработке')}
+              onClick={() => window.open('https://t.me/fiarqq', '_blank')}
             >
               <Icon name="Send" size={20} />
               Войти через Telegram
