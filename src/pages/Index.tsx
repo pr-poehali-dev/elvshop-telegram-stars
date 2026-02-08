@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,36 @@ const Index = () => {
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<{ name: string; price: number } | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    const savedUsername = localStorage.getItem('username');
+    if (loggedIn === 'true' && savedUsername) {
+      setIsLoggedIn(true);
+      setUsername(savedUsername);
+    }
+  }, []);
+
+  const generateRandomUsername = () => {
+    const adjectives = ['Cosmic', 'Stellar', 'Galactic', 'Astro', 'Nebula', 'Quantum', 'Solar', 'Lunar'];
+    const nouns = ['Star', 'Nova', 'Comet', 'Meteor', 'Galaxy', 'Orbit', 'Eclipse', 'Voyager'];
+    const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+    const randomNum = Math.floor(Math.random() * 9999);
+    return `${randomAdj}${randomNoun}${randomNum}`;
+  };
+
+  const handleTelegramLogin = () => {
+    const newUsername = generateRandomUsername();
+    setUsername(newUsername);
+    setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('username', newUsername);
+    setShowLoginDialog(false);
+    window.open('https://t.me/fiarqq', '_blank');
+  };
 
   const cardNumber = '2202 2088 4712 6159';
 
@@ -101,7 +131,7 @@ const Index = () => {
           <div className="space-y-3 py-4">
             <Button 
               className="w-full justify-start gap-3 h-12 bg-[#0088cc] hover:bg-[#0088cc]/90 text-white"
-              onClick={() => window.open('https://t.me/fiarqq', '_blank')}
+              onClick={handleTelegramLogin}
             >
               <Icon name="Send" size={20} />
               Войти через Telegram
@@ -257,13 +287,24 @@ const Index = () => {
                 О нас
               </Button>
             </nav>
-            <Button 
-              className="bg-gradient-to-r from-primary to-secondary hover:opacity-90"
-              onClick={() => setShowLoginDialog(true)}
-            >
-              <Icon name="Star" size={16} className="mr-2" />
-              Войти
-            </Button>
+            {isLoggedIn ? (
+              <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-green-500/20 border border-green-500/30">
+                <Avatar className="w-8 h-8 border-2 border-green-500">
+                  <AvatarFallback className="bg-green-500 text-white text-sm">
+                    {username.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-green-400 font-semibold">@{username}</span>
+              </div>
+            ) : (
+              <Button 
+                className="bg-gradient-to-r from-green-600 to-green-700 hover:opacity-90"
+                onClick={() => setShowLoginDialog(true)}
+              >
+                <Icon name="Star" size={16} className="mr-2" />
+                Войти
+              </Button>
+            )}
           </div>
         </header>
 

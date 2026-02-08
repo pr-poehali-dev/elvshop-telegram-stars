@@ -6,33 +6,33 @@
 
 @layer base {
   :root {
-    --background: 264 70% 7%;
+    --background: 0 0% 5%;
     --foreground: 0 0% 98%;
 
-    --card: 260 50% 12%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 260 50% 12%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 271 81% 56%;
+    --primary: 142 76% 36%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 326 90% 65%;
+    --secondary: 142 71% 45%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 260 30% 20%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 38 90% 70%;
-    --accent-foreground: 260 70% 7%;
+    --accent: 142 86% 55%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 260 30% 18%;
-    --input: 260 30% 18%;
-    --ring: 271 81% 56%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 142 76% 36%;
 
     --radius: 1rem;
   }
@@ -60,7 +60,13 @@
 
 @layer utilities {
   .cosmic-bg {
-    background: linear-gradient(135deg, #0f0b1f 0%, #1a0e33 50%, #0f0b1f 100%);
+    background: linear-gradient(
+      135deg,
+      #000000 0%,
+      #0a2f0a 30%,
+      #001a00 70%,
+      #000000 100%
+    );
   }
 
   .star-shimmer {
@@ -80,19 +86,19 @@
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+    background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .glow-card {
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
     transition: all 0.3s ease;
   }
 
   .glow-card:hover {
-    box-shadow: 0 0 50px rgba(217, 70, 239, 0.5);
+    box-shadow: 0 0 50px rgba(74, 222, 128, 0.4);
     transform: translateY(-5px);
   }
 }
