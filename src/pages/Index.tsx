@@ -5,13 +5,24 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('catalog');
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<{ name: string; price: number } | null>(null);
+
+  const cardNumber = '2202 2088 4712 6159';
 
   const handleBuyClick = (productName: string, price: number) => {
-    const sbpUrl = `https://qr.nspk.ru/proactive/generate?sum=${price}&payeeId=123456789&purpose=${encodeURIComponent('Покупка: ' + productName)}`;
-    window.open(sbpUrl, '_blank');
+    setSelectedProduct({ name: productName, price });
+    setShowPaymentDialog(true);
+  };
+
+  const copyCardNumber = () => {
+    navigator.clipboard.writeText(cardNumber.replace(/\s/g, ''));
+    toast.success('Номер карты скопирован!');
   };
 
   const starPackages = [
@@ -74,7 +85,64 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen cosmic-bg relative overflow-hidden">
+    <>
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="bg-gradient-to-br from-card/95 to-card/80 backdrop-blur-md border-white/20">
+          <DialogHeader>
+            <DialogTitle className="text-2xl gradient-text flex items-center gap-2">
+              <Icon name="CreditCard" size={24} />
+              Оплата заказа
+            </DialogTitle>
+            <DialogDescription className="text-white/70">
+              {selectedProduct && (
+                <span>Переведите {selectedProduct.price}₽ на карту Сбербанк</span>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div className="p-6 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white/70 text-sm">Номер карты Сбербанк</span>
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
+                  Сбербанк
+                </Badge>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-2xl font-mono font-bold text-white">{cardNumber}</p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-white/20 hover:bg-white/10 text-white"
+                  onClick={copyCardNumber}
+                >
+                  <Icon name="Copy" size={16} className="mr-2" />
+                  Копировать
+                </Button>
+              </div>
+            </div>
+            {selectedProduct && (
+              <div className="p-4 rounded-lg bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/20 space-y-2">
+                <div className="flex justify-between text-white/80">
+                  <span>Товар:</span>
+                  <span className="font-semibold">{selectedProduct.name}</span>
+                </div>
+                <div className="flex justify-between text-white/80">
+                  <span>Сумма к оплате:</span>
+                  <span className="text-2xl font-bold gradient-text">{selectedProduct.price}₽</span>
+                </div>
+              </div>
+            )}
+            <div className="p-4 rounded-lg bg-accent/10 border border-accent/20">
+              <p className="text-sm text-white/70 flex items-start gap-2">
+                <Icon name="Info" size={16} className="mt-0.5 text-accent" />
+                После перевода напишите в поддержку для подтверждения платежа
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <div className="min-h-screen cosmic-bg relative overflow-hidden">
       <div className="absolute inset-0 opacity-30">
         {[...Array(50)].map((_, i) => (
           <div
@@ -382,6 +450,7 @@ const Index = () => {
         </footer>
       </div>
     </div>
+    </>
   );
 };
 
